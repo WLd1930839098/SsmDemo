@@ -114,4 +114,9 @@ public class UserController {
         roleService.addRoleToUser(ids,Integer.parseInt(userId));
         return "ok";
     }
+
+
+    public static void testGit(){
+
+    }
 }
