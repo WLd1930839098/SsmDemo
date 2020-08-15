@@ -11,7 +11,7 @@ public interface UserDao {
     List<User> findAllUsers(@Param("searchName")String searchName);
 
     void deleteUserById(int id);
-    void deleteAllUsers();
+    void deleteAllUsers(@Param("ids")List<Integer>ids);
 
     void addUser(User user);
 

@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteAll() {
-        userDao.deleteAllUsers();
+    public void deleteAll(List<Integer> ids) {
+        userDao.deleteAllUsers(ids);
     }
 
     @Override
@@ -51,4 +51,5 @@ public class UserServiceImpl implements UserService {
     public User findById(int id) {
         return userDao.findUserById(id);
     }
+
 }

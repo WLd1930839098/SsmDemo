@@ -1,4 +1,3 @@
-
 package com.bins.controller;
 
 import com.bins.bean.Role;
@@ -11,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,9 +22,9 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @RequestMapping("login.do")
     //username，password需要和jsp文件内input标签内的name属性相同
@@ -44,7 +46,7 @@ public class UserController {
         List<User> userList = userService.findAll(username);
         ModelAndView modelAndView = new ModelAndView();
         //将数据绑定到视图解析器
-        modelAndView.addObject("users",userList);//在界面中就可以使用users来获得所有User对象
+        modelAndView.addObject("users",userList);
         modelAndView.setViewName("user-list");
         return modelAndView;
     }
@@ -56,9 +58,15 @@ public class UserController {
     }
 
     @RequestMapping("deleteAll.do")
-    public String deleteAll(){
-        userService.deleteAll();
-        return "redirect:findAll.do";
+    @ResponseBody
+    public String deleteAll(String userIdList){
+        String[] userIds = userIdList.split(",");
+        List<Integer> ids = new ArrayList<>();
+        for(String tmp:userIds){
+            ids.add(Integer.parseInt(tmp));
+        }
+        userService.deleteAll(ids);
+        return "ok";
     }
 
     @RequestMapping("add.do")
@@ -89,9 +97,21 @@ public class UserController {
         modelAndView.setViewName("user-role-add");
         modelAndView.addObject("id",id);
 
-        List<Role> roles = roleService.findAll();
+        List<Role> roles = roleService.findNoRoles(id);
         modelAndView.addObject("roles",roles);
         return modelAndView;
     }
 
+    @RequestMapping("addRole.do")
+    @ResponseBody           //保证返回的数据是json字符串
+    public String addRole(String roleList,String userId){
+//        roleService.addRoleToUser(userId,roleId);
+        String[] roleIds = roleList.split(",");
+        List<Integer> ids = new ArrayList<>();
+        for(String tmp:roleIds){
+            ids.add(Integer.parseInt(tmp));
+        }
+        roleService.addRoleToUser(ids,Integer.parseInt(userId));
+        return "ok";
+    }
 }

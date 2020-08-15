@@ -11,7 +11,7 @@ public interface UserService {
 
     void deleteById(int id);
 
-    void deleteAll();
+    void deleteAll(List<Integer> ids);
 
     void add(User user);
 

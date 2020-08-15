@@ -114,7 +114,7 @@
 											<i class="fa fa-file-o"></i> 新建
 										</button>
 										
-										<button type="button" class="btn btn-default" title="删除" onclick="deleteAll()">
+										<button type="button" ondblclick="deleteAll()" class="btn btn-default" title="删除" onclick="deleteAll()">
 											<i class="fa fa-refresh"></i> 删除
 										</button>
 									</div>
@@ -320,23 +320,23 @@
 
 			function deleteAll() {
 				var checkedNum=$("input[name='ids']:checked").length;
-				alert(checkedNum);
+				// alert(checkedNum);
 				if(checkedNum==0){
 					alert("请至少选择一个进行删除！！！");
 					return;
 				}
 				if(confirm("确认要删除这些用户吗？")){
-					var userList=new Array();
+					var userIdList=new Array();
 					$("input[name='ids']:checked").each(
 							function () {
-								userList.push($(this).val())
+								userIdList.push($(this).val())
 							}
 					);
-					alert(userList);
+					// alert(userList);
 					$.ajax({
 						type:"post",
 						url: "${pageContext.request.contextPath}/user/deleteAll.do",
-						data:{userList:userList.toString()},
+						data:{userIdList:userIdList.toString()},
 						success:function () {
 							alert("删除成功");
 							location.reload();
@@ -349,7 +349,6 @@
 				}
 
 			}
-
 
 		</script>
 </body>

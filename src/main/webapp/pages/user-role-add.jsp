@@ -117,7 +117,7 @@
 									<tr>
 										<td>
 										
-										<input name="roleId" type="checkbox" value="${role.id}">
+										<input name="roleId" type="checkbox" value="${role.id}" readonly="readonly">
 										
 										</td>
 										<td>${role.id}</td>
@@ -131,7 +131,7 @@
 						</table>
 				<!--订单信息/--> <!--工具栏-->
 				<div class="box-tools text-center">
-					<button type="button" class="btn bg-maroon" >保存</button>
+					<button type="button" onclick="addRole()" class="btn bg-maroon" >保存</button>
 					<button type="button" class="btn bg-default"
 						onclick="history.back(-1);">返回</button>
 				</div>
@@ -269,7 +269,41 @@
 				liObj.addClass("active");
 			}
 		}
+		
+		function addRole() {
+			var length = $("input[name='roleId']:checked").length;
+			if(length==0){
+				alert("请至少选择一个角色");
+				return;
+			}
+			if(confirm("你确认要添加这些角色吗？")){
+				var roleList=new Array();
+				$("input[name='roleId']:checked").each(
+						function () {
+							roleList.push($(this).val())
+						}
+				)
+				var userId = $("input[name='userId").val();
 
+				// location.href="/usr/addRole.do?roles="+rolesList.toString()+"&userId"+userId;
+				$.ajax({
+					type:"post",
+					url:"${pageContext.request.contextPath}/user/addRole.do",
+					data:{
+						roleList:roleList.toString(),
+						userId:userId.toString()
+					},
+					success:function (result) {
+						alert("添加成功"+result);
+						location.reload();
+					},
+					error:function () {
+						alert("添加失败")
+					}
+				});
+			}
+
+		}
 		
 
 

@@ -4,4 +4,12 @@
     <select id="findAllRoles" resultType="role">
         select * from t_role
     </select>
+
+    <select id="findNoRolesByUserId" parameterType="int" resultType="role">
+        select * from t_role where id not in(select roleId from t_user_role where userId=#{id})
+    </select>
+
+    <insert id="addRole" parameterType="userRole">
+        insert into t_user_role(userId,roleId) values(#{userId},#{roleId})
+    </insert>
 </mapper>
