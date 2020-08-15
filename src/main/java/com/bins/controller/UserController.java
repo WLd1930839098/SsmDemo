@@ -115,8 +115,4 @@ public class UserController {
         return "ok";
     }
 
-
-    public static String testGit(){
-        return "";
-    }
 }
