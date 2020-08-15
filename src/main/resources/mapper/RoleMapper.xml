@@ -12,4 +12,11 @@
     <insert id="addRole" parameterType="userRole">
         insert into t_user_role(userId,roleId) values(#{userId},#{roleId})
     </insert>
+
+    <delete id="deleteRole">
+        delete from t_user_role where userId in
+        <foreach collection="userIds" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

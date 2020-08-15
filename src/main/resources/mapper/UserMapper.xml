@@ -18,11 +18,10 @@
         delete from t_user where id=#{id}
     </delete>
 
-    <delete id="deleteAllUsers" parameterType="String">
+    <delete id="deleteAllUsers">
         delete from t_user where id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
-            #{id
-            }
+            #{id}
         </foreach>
     </delete>
 

@@ -1,6 +1,7 @@
 package com.bins.service.impl;
 
 import com.bins.bean.User;
+import com.bins.dao.RoleDao;
 import com.bins.dao.UserDao;
 import com.bins.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    RoleDao roleDao;
 
     @Override
     public boolean login(String username, String password) {
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteAll(List<Integer> ids) {
+        roleDao.deleteRole(ids);
         userDao.deleteAllUsers(ids);
     }
 

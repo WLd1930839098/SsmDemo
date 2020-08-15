@@ -13,4 +13,6 @@ public interface RoleDao {
     List<Role> findNoRolesByUserId(int id);
 
     void addRole(UserRole userRole);
+
+    void deleteRole(@Param("userIds")List<Integer> userIds);
 }
