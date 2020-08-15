@@ -116,7 +116,7 @@ public class UserController {
     }
 
 
-    public static void testGit(){
-
+    public static String testGit(){
+        return "";
     }
 }
