@@ -29,7 +29,7 @@
 				<ul class="treeview-menu">
 					<li id="system-setting">
 						<a
-						href="/user/findAll.do"> <i
+						href="/user/findAll.do?currentPage=1&type=2"> <i
 							class="fa fa-circle-o"></i> 用户管理
 					</a>
 					</li>

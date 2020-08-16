@@ -1,5 +1,6 @@
 package com.bins.controller;
 
+import com.bins.bean.PageInfo;
 import com.bins.bean.Role;
 import com.bins.bean.User;
 import com.bins.service.RoleService;
@@ -10,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +31,12 @@ public class UserController {
 
     @RequestMapping("login.do")
     //username，password需要和jsp文件内input标签内的name属性相同
-    public ModelAndView login(String username,String password){
+    public ModelAndView login(String username,String password,HttpSession session){
 
-        boolean flag = userService.login(username,password);
+        User user = userService.login(username,password);
         ModelAndView modelAndView = new ModelAndView();
-        if(flag){
+        if(user!=null){
+            session.setAttribute("user",user);
             modelAndView.setViewName("main");
         }else{
             modelAndView.setViewName("../failer");
@@ -41,13 +45,23 @@ public class UserController {
     }
 
     @RequestMapping("findAll.do")
-    public ModelAndView findAll(String username){
+    public ModelAndView findAll(String username, @RequestParam(defaultValue = "1") int currentPage, @RequestParam(defaultValue = "0") int type,HttpSession session){
+        if(type==1){    //搜索功能
+            session.setAttribute("sn",username);
+        }else if(type==2){//
+            session.removeAttribute("sn");
+        }
+        else {
+            username = (String)session.getAttribute("sn");
+        }
+
         //方法名无所谓可以随便写
-        List<User> userList = userService.findAll(username);
+        PageInfo pageInfo = userService.findAll(username,currentPage);
         ModelAndView modelAndView = new ModelAndView();
         //将数据绑定到视图解析器
-        modelAndView.addObject("users",userList);
+        modelAndView.addObject("pageInfo",pageInfo);
         modelAndView.setViewName("user-list");
+        //modeAndView.addObject("sn",username);
         return modelAndView;
     }
 

@@ -1,5 +1,6 @@
 package com.bins.service.impl;
 
+import com.bins.bean.PageInfo;
 import com.bins.bean.User;
 import com.bins.dao.RoleDao;
 import com.bins.dao.UserDao;
@@ -18,16 +19,28 @@ public class UserServiceImpl implements UserService {
     RoleDao roleDao;
 
     @Override
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
         User user = userDao.findUserByName(username);
         boolean flag = (user!=null&&user.getPassword().equals(password));
-
-        return flag;
+        if(flag){
+            return user;
+        }else{
+            return null;
+        }
     }
 
     @Override
-    public List<User> findAll(String searchName) {
-        return userDao.findAllUsers(searchName);
+    public PageInfo findAll(String searchName, int currentPage) {
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setCurrentPage(currentPage);
+        pageInfo.setSize(5);
+        int start = (currentPage-1)*5;
+        pageInfo.setList(userDao.findAllUsers(searchName,start));
+        int count = userDao.getCount(searchName);
+        pageInfo.setTotalCount(count);
+        int totalPage = (int)Math.ceil((double)count/pageInfo.getSize());
+        pageInfo.setTotalPage(totalPage);
+        return pageInfo;
     }
 
     @Override

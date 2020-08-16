@@ -13,6 +13,7 @@
         <if test="searchName!=null and searchName!=''">
             where username like concat('%',#{searchName},'%')
         </if>
+        limit #{start},5
     </select>
     <delete id="deleteUserById" parameterType="int">
         delete from t_user where id=#{id}
@@ -32,4 +33,12 @@
     <update id="updateUser" parameterType="user">
         update t_user set username=#{username},password=#{password} where id=#{id}
     </update>
+
+    <select id="getCount" resultType="int">
+        select count(*) from t_user
+        <if test="searchName!=null and searchName!=''">
+            where username like concat('%',#{searchName},'%')
+        </if>
+    </select>
+
 </mapper>

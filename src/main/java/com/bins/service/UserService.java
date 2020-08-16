@@ -1,13 +1,14 @@
 package com.bins.service;
 
+import com.bins.bean.PageInfo;
 import com.bins.bean.User;
 
 import java.util.List;
 
 public interface UserService {
-    boolean login(String username,String password);
+    User login(String username,String password);
 
-    List<User> findAll(String searchname);
+    PageInfo findAll(String searchname, int currentPage);
 
     void deleteById(int id);
 

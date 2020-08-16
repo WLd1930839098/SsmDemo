@@ -120,7 +120,7 @@
 									</div>
 								</div>
 							</div>
-							<form action="${pageContext.request.contextPath}/user/findAll.do" method="post"><!--?type=1-->
+							<form action="${pageContext.request.contextPath}/user/findAll.do?type=1" method="post">
 								<div class="col-md-4 data1">
 									<input type="text" class="form-control" name="username"
 										   placeholder="username" value="">
@@ -144,7 +144,7 @@
 									</tr>
 								</thead>
 								<tbody>
-								   		<c:forEach items="${users}" var="user">
+								   		<c:forEach items="${pageInfo.list}" var="user">
 										<tr>
 											<td><input id="ids" name="ids" type="checkbox" value="${user.id}"></td>
 											<td>${user.id}</td>
@@ -181,13 +181,17 @@
 					<!-- /.box-body -->
 						<div class="box-tools pull-right">
 							<ul class="pagination">
-								<li><a href="" aria-label="Previous">首页</a></li>
-								<li><a href="">上一页</a></li>
-								<li><a href="">1</a></li>
-								<li><a href="">2</a></li>
-								<li><a href="">3</a></li>								
-								<li><a href="">下一页</a></li>
-								<li><a href="" aria-label="Next">尾页</a></li>
+								<li><a href="/user/findAll.do?currentPage=1" aria-label="Previous">首页</a></li>
+								<c:if test="${pageInfo.currentPage-1>0}">
+									<li><a href="/user/findAll.do?currentPage=${pageInfo.currentPage-1}">上一页</a></li>
+								</c:if>
+								<c:forEach begin = "1" end="${pageInfo.totalPage}" var="pageNum">
+									<li><a href="/user/findAll.do?currentPage=${pageNum}">${pageNum}</a> </li>
+								</c:forEach>
+								<c:if test="${pageInfo.currentPage<pageInfo.totalPage}">
+									<li><a href="/user/findAll.do?currentPage=${pageInfo.currentPage+1}">下一页</a></li>
+								</c:if>
+								<li><a href="/user/findAll.do?currentPage=${pageInfo.totalPage}" aria-label="Next">尾页</a></li>
 							</ul>
 						</div>
 
